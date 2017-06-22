@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Document</title>
+  
+   <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css'></link>
+</head>
+<body>
+
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.min.js'></script>
+
+  <div id="app">
+     <section class="hero">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title" v-text="title"></h1>
+            <label>New to-do</label>
+             <input type="text" v-on:keyup.enter='addTask' v-model='taskName'>
+          </div>
+        </div>
+      </section>
+
+
+    <div class="container">
+      <div class="columns is-multiline">
+        <div class='column is-12' v-for='task in tasks' :class='task.done ? "is-done": "is-not-done"'>
+          <p>Title: <span v-text='task.taskName'></span></p>
+          <label for="checkbox" >Done:</label>
+          <input v-model='task.done' type="checkbox" />
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <script>
+    new Vue({
+      el:'#app',
+      data:{
+        title:'TO DO',
+        taskName:'',
+        tasks:[]
+      },
+      methods:{
+        addTask() {
+          this.tasks.push({
+            taskName:this.taskName,
+            done:false
+          })
+          this.taskName = ''
+        }
+      }
+    })
+  </script>
+</body>
+
+<style>
+
+  .column {
+    border: 2px solid white;
+    color: white;
+  }
+
+  .is-done{
+    background-color: #4fc08d;
+  }
+  
+  .is-not-done{
+    background-color: #BF211E;
+  }
+  
+</style>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Document</title>
+  
+   <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css'></link>
+</head>
+<body>
+
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.min.js'></script>
+
+  <div id="app">
+     <section class="hero">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title" v-text="title"></h1>
+            <label>New to-do</label>
+             <input id="input" type="text" >
+          </div>
+        </div>
+      </section>
+
+
+    <div class="container">
+      <div class="columns is-multiline" id="task-container">
+ 
+      </div>
+    </div>
+    
+  </div>
+  
+  <script>
+      var input = document.querySelector('#input');
+      var taskContainer = document.querySelector('#task-container');
+
+      input.addEventListener('keyup', (e) => {
+        if (e.keyCode !== 13) return;
+        const taskName = e.target.value;
+        const div = document.createElement('div');
+        div.classList.add('column');
+        div.classList.add('is-12');
+        div.classList.add('is-not-done');
+        const task = `
+            <p>Title: <span>${taskName}</span></p>
+            <label for="checkbox">Done:</label>
+            <input type="checkbox"/>
+          `;
+        div.innerHTML = task;
+        taskContainer.appendChild(div);
+        addCheckboxEvents();
+      })
+
+      function addCheckboxEvents () {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.addEventListener('click', toggleTask))
+      }
+
+      function toggleTask (e) {
+        e.target.parentElement.classList.toggle('is-not-done');
+        e.target.parentElement.classList.toggle('is-done')
+      }
+  </script>
+</body>
+
+<style>
+
+  .column {
+    border: 2px solid white;
+    color: white;
+  }
+
+  .is-done{
+    background-color: #4fc08d;
+  }
+  
+  .is-not-done{
+    background-color: #BF211E;
+  }
+  
+</style>
+</html>
