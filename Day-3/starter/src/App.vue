@@ -1,15 +1,16 @@
 <template>
   <div id="app">
-    <task-view></task-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-import TaskView from './components/TaskView.vue'
 
 export default {
   name: 'app',
-  components: { TaskView },
+  components: {  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'

@@ -23,8 +23,8 @@
       <section class="hero">
         <div class="hero-body columns is-multiline">
           
-          <div class="box column is-10 is-offset-1"  v-for='(task, index) in tasksToShow'>
-             <task :done="task.done" :name="task.taskName" @doneChanged="handleDoneChange" :index="index" @taskDeleted="handleTaskDeleted"></task>
+          <div class="box column is-10 is-offset-1"  v-for='(task, index) in tasksToShow' :key='index'>
+             <task :done="task.done" :name="task.taskName" :categories='task.categories'  :description='task.description' @doneChanged="handleDoneChange" :index="index" @taskDeleted="handleTaskDeleted"></task>
           </div>
           
         </div>
@@ -39,6 +39,7 @@
 import Task from './Task.vue'
 import Vue from 'vue'
 import axios from 'axios';
+import bus from '../bus/index.js'
 
 export default {
   name: 'task-view',
@@ -67,6 +68,14 @@ export default {
       this.tasks = response.data.tasks;
     })
     .catch(error => console.log(error))
+
+
+    bus.$on('updateTask',(index,updatedTask)=>{
+      var task = this.tasks[index];
+      task.taskName=updatedTask.name;
+      task.description = updatedTask.description
+      task.categories = updatedTask.categories.slice()
+    })
   },
   computed: {
     tasksToShow() {
@@ -77,7 +86,9 @@ export default {
     addTask() {
       this.tasks.push({
         taskName:this.taskName,
-        done: false
+        done: false,
+        description:'',
+        categories:[]
       })
       this.taskName = ''
     },
