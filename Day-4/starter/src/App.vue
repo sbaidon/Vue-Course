@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <keep-alive>
+    <keep-alive exclude='task-details'>
 
-      <router-view exclude='TaskDetails'>
+      <router-view >
       </router-view>
 
     </keep-alive>
