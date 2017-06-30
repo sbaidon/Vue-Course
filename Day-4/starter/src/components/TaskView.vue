@@ -78,11 +78,11 @@
     },
     created() {
 
-      axios.get('http://demo3594906.mockable.io/getTasks')
+      /*axios.get('http://demo3594906.mockable.io/getTasks')
         .then((response) => {
           this.tasks = response.data.tasks;
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log(error))*/
       var componentThis=this;
       bus.$on('updateTask',function(index,updatedTask){
          var task= componentThis.tasks[index];
