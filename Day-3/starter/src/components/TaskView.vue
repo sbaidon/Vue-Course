@@ -7,6 +7,7 @@
           <div class="field">
             <p class="control">
               <input class="input is-large" placeholder="Create a New task" type="text" v-on:keyup.enter='addTask' v-model='taskName'>
+              <input class="input is-large" placeholder="Search a task" type="text" v-model="searchedTask" >
             </p>
           </div>
         </div>
@@ -50,7 +51,8 @@ export default {
         taskName:'',
         tasks: [],
         showDone:true,
-        showAll:true
+        showAll:true,
+        searchedTask: ''
     }
   },
   watch: {
@@ -79,7 +81,17 @@ export default {
   },
   computed: {
     tasksToShow() {
-      return this.tasks.filter((task) => task.done === this.showDone || this.showAll)
+      const isEmpty = this.searchedTask === '';
+      /*
+      if (this.searchedTask === '') {
+        return this.tasks.filter((task) => task.done === this.showDone || this.showAll)
+      }
+
+      return this.tasks.filter((task) => task.taskName.includes(this.searchedTask));
+      */
+      return this.tasks
+        .filter((task) => task.done === this.showDone || this.showAll)
+        .filter((task) => task.taskName.includes(this.searchedTask) || isEmpty);
     }
   },
   methods:{
@@ -103,14 +115,14 @@ export default {
       this.showDone = false
       this.showAll = false
     },
-    handleDoneChange(index) {
+    handleDoneChange(e, index) {
         const taskChanged = this.tasks[index];
         taskChanged.done = !taskChanged.done
         Vue.set(this.tasks, index, taskChanged);
     },
     handleTaskDeleted(index) {
       this.tasks.splice(index, 1);
-    }
+    },
   }
 }
 </script>

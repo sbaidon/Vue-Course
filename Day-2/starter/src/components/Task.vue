@@ -9,6 +9,10 @@
         <h2 class='column is-three-quarters is-marginless' :class='isDone ? "is-done" : "is-not-done"'>{{ name }}</h2>
         
       </div>
+
+      <div class="column is-1 is-narrow">
+        <a class="button" @click="deleteTask" >Delete</a>
+      </div>
     </div>
   </article>
 </template>
@@ -27,9 +31,17 @@ export default {
       return this.done
     }
   },
+  filters: {
+    capitalize(value) {
+      
+    }
+  },
   methods: {
     toggleIsDone() {
       this.$emit('doneChanged', this.index);
+    },
+    deleteTask() {
+      this.$emit('taskDeleted', this.index);
     }
   }
 }

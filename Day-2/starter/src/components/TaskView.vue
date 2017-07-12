@@ -3,7 +3,7 @@
     <div class="column is-half is-offset-one-quarter">
       <section class="hero">
         <div class="hero-body">
-          <h1 class="title has-text-centered" v-text="title"></h1>
+          <h1 class="title has-text-centered">{{ title }}</h1>
           <div class="field">
             <p class="control">
               <input class="input is-large" placeholder="Create a New task" type="text" v-on:keyup.enter='addTask' v-model='taskName'>
@@ -14,9 +14,9 @@
       <div class="columns">
         <div class=" block column is-half is-offset-one-quarter">
           
-          <a class="button "  @click='showAllTasks'>Show All</a>
-          <a class="button "  @click='showDoneTasks'>Done</a>
-          <a class="button "  @click='showActiveTasks'>Active</a>
+          <a class="button"  @click='showAllTasks'>Show All</a>
+          <a class="button"  @click='showDoneTasks'>Done</a>
+          <a class="button"  @click='showActiveTasks'>Active</a>
           
         </div>
       </div>
@@ -24,7 +24,7 @@
         <div class="hero-body columns is-multiline">
           
           <div class="box column is-10 is-offset-1"  v-for='(task, index) in tasksToShow'>
-             <task :done="task.done" :name="task.taskName" @doneChanged="handleDoneChange" :index="index"></task>
+             <task :done="task.done" :name="task.taskName" @doneChanged="handleDoneChange" :index="index" @taskDeleted="handleTaskDeleted"></task>
           </div>
           
         </div>
@@ -38,6 +38,7 @@
 <script>
 import Task from './Task.vue'
 import Vue from 'vue'
+import axios from 'axios';
 
 export default {
   name: 'task-view',
@@ -50,6 +51,22 @@ export default {
         showDone:true,
         showAll:true
     }
+  },
+  watch: {
+    showDone(newDone, oldDone) {
+      console.log(newDone);
+      console.log(oldDone);
+    }
+  },
+  mounted () {
+
+  },
+  created () {
+    axios.get('http://demo3594906.mockable.io/getTasks')
+    .then((response) => {
+      this.tasks = response.data.tasks;
+    })
+    .catch(error => console.log(error))
   },
   computed: {
     tasksToShow() {
@@ -79,6 +96,9 @@ export default {
         const taskChanged = this.tasks[index];
         taskChanged.done = !taskChanged.done
         Vue.set(this.tasks, index, taskChanged);
+    },
+    handleTaskDeleted(index) {
+      this.tasks.splice(index, 1);
     }
   }
 }
